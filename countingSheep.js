@@ -10,4 +10,16 @@ function countSheep(num){
   return countSheep(num-1);
 }
 
-countSheep(3);
+// countSheep(3);
+
+// Array Double
+const doubleInput = arr => {
+  // base case
+  if (!arr.length) {
+    return [];
+  }
+  return [arr[0] * 2, ...doubleInput(arr.slice(1))];
+
+};
+
+console.log(doubleInput([1, 2, 3]));
