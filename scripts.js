@@ -14,7 +14,7 @@ const doubleArray = arr => {
   if (!arr.length) {
     return [];
   }
-  return [arr[0] * 2, ...doubleInput(arr.slice(1))];
+  return [arr[0] * 2, ...doubleArray(arr.slice(1))];
 };
 // console.log(doubleArray([1, 2, 3]));
 
@@ -34,38 +34,14 @@ function nthTriangular(n) {
 }
 // console.log(nthTriangular(5));
 
-
-
-
-
-
-function stringSplitter(str, splitted){
-  if(str.length < 1){
-    return [];
+function splitString(str, sep){
+  if(str.indexOf(sep) < 0){
+    return [str];
   }
-  if(str[0] === ','){
-    return [...stringSplitter(str.slice(1))];
-  }
-  return [str[0] + stringSplitter(str.slice(1))];
+  return [str.substr(0, str.indexOf(sep)), 
+    ...splitString(str.substr(str.indexOf(sep)+1), sep)];
 }
-
-
-
-console.log(stringSplitter('hello,timm,im jimm', ','));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// console.log(splitString('hello im jimm', ' '));
 
 function factorial(n){
   if(n === 0){
@@ -92,7 +68,51 @@ function fibonacci(n){
   es  as  sa
   et  at  st
 */
-function anagrams(str){
+// function anagrams(str, pre){
+//   let n = str.length;
+//   if(n === 0){
+//     return console.log(pre);
+//   }
+//   for(let i = 0; i < n; i++){
+//     anagrams(pre+str[i], str.substr(0, i)+str.substr(i+1, n));
+//   }
+// }
+// anagrams('east', '');
+
+function anagrams(prefix, str){
+  if(str.length <= 1){
+    console.log(`The anagram is ${prefix}${str}`);
+  } else {
+    for(let i=0; i<str.length; i++){
+      let currentLetter = str.substring(i, i+1); 
+      let previousLetters = str.substring(0,i);
+      let afterLetters = str.substring(i+1);
+      anagrams(prefix+currentLetter, previousLetters+afterLetters);
+    }
+  }
+}
+function printAnagram(word){
+  //console.log(`The word for which we will find an anagram is ${word}`);
+  anagrams(' ', word);
 
 }
-// anagrams('east');
+printAnagram('east');
+
+
+
+const animalHierarchy = [
+  {id: 'Animals', parent: null},
+  {id: 'Mammals', parent: 'Animals'},
+  {id: 'Dogs', parent:'Mammals' },
+  {id: 'Cats', parent:'Mammals' },
+  {id: 'Golden Retriever', parent: 'Dogs'},
+  {id: 'Husky', parent:'Dogs' },
+  {id: 'Bengal', parent:'Cats' }
+];
+// ==============================
+function traverse(animalHierarchy, parent) {
+  let node = {};
+  animalHierarchy.filter(item => item.parent === parent).forEach(item => node[item.id] = traverse(animalHierarchy, item.id));
+  return node;  
+}
+//console.log(traverse(animalHierarchy, null));
